@@ -2,34 +2,28 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Persistence;
 
-namespace Persistence.Migrations
-{
+namespace Persistence.Migrations {
     [DbContext(typeof(DataContext))]
     [Migration("20200324201114_InitialCreate")]
-    partial class InitialCreate
-    {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
-        {
+    partial class InitialCreate {
+        protected override void BuildTargetModel(ModelBuilder modelBuilder) {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.0.1");
 
-            modelBuilder.Entity("Domain.Value", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+            modelBuilder.Entity("Domain.Value", b => {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                b.Property<string>("Name")
+                    .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Values");
-                });
+                b.ToTable("Values");
+            });
 #pragma warning restore 612, 618
         }
     }
