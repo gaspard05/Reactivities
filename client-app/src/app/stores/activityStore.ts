@@ -85,9 +85,6 @@ class ActivityStore {
       console.log(error);
     }
   };
-  @action openCreateForm = () => {
-    this.activity = null;
-  };
   @action editActivity = async (activity: IActivity) => {
     this.submitting = true;
     try {
