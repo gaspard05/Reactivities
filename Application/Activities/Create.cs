@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -10,6 +11,7 @@ namespace Application.Activities {
         public class Command : IRequest {
 
             public Guid Id { get; set; }
+
             public string Title { get; set; }
             public string Description { get; set; }
             public string Category { get; set; }
@@ -17,6 +19,7 @@ namespace Application.Activities {
             public string City { get; set; }
             public string Venue { get; set; }
         }
+
         public class Handler : IRequestHandler<Command> {
             private readonly DataContext _context;
             public Handler(DataContext context) {
