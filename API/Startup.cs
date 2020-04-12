@@ -2,6 +2,7 @@ using System.Text;
 using Application.Activities;
 using Application.Interfaces;
 using API.Middleware;
+using AutoMapper;
 using Domain;
 using FluentValidation.AspNetCore;
 using Infrastructure.Security;
@@ -30,6 +31,7 @@ namespace API {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddDbContext<DataContext>(opt => {
+                opt.UseLazyLoadingProxies();
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddCors(opt => {
@@ -55,6 +57,12 @@ namespace API {
             identityBuilder.AddEntityFrameworkStores<DataContext>();
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
 
+            services.AddAuthorization(opt => {
+                opt.AddPolicy("IsActivityHost", policy => {
+                    policy.Requirements.Add(new IsHostRequirement());
+                });
+            });
+            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(opt => {
@@ -65,6 +73,8 @@ namespace API {
                     ValidateIssuer = false
                     };
                 });
+            services.AddAutoMapper(typeof(List.Handler).Assembly);
+
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
         }
